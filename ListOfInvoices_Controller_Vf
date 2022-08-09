@@ -1,0 +1,20 @@
+<apex:page controller="ListOfInvoices_Controller">
+    <apex:form>
+        <apex:pageBlock title="Invoices">
+            <apex:PageblockTable value="{!Invlst}" var="inv">
+                <apex:column headerValue="Invoice Number" >
+                    <apex:outputLink value="/{!inv.id}" target="_blank"> {!inv.Name} </apex:outputLink>
+                </apex:column>
+                <apex:column value="{!inv.Account__c}" headerValue="Account" />
+                <apex:column value="{!inv.Invoice_Date__c}" headerValue="Invoice Date" />
+                <apex:column value="{!inv.Due_Date__c}" headerValue="Due Date" />
+                <apex:column value="{!inv.Amount_Paid__c}" headerValue="Amount Paid" />
+                <apex:column value="{!inv.Amount_Due__c}" headerValue="Amount Due" />
+                <apex:column value="{!inv.Days_Overdue__c}" headerValue="Days Overdue" />
+                <apex:column value="{!inv.Total__c}" headerValue="Total" />
+                <apex:column value="{!inv.Status__c}" headerValue="Status" />
+                
+            </apex:PageblockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
