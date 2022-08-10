@@ -1,0 +1,72 @@
+<apex:page standardController="Invoice__c" extensions="ListofInvoicesController" lightningStylesheets="true">
+    
+    <style type="text/css">
+        .headerRow .row
+        {
+        text-transform:initial;
+        font-size:14px;
+        color:Navy;
+        }
+        .custPopup{
+        background-color: white;
+        border-width: 2px;
+        border-style: solid;
+        z-index: 9999;
+        left: 50%;
+        padding:10px;
+        position: absolute;
+        width: 500px;
+        margin-left: -250px;
+        top:100px;
+        }
+        .popupBackground{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        }
+        
+    </style>
+    <apex:form id="formid">
+        <apex:pageBlock>
+            <apex:pageBlockSection title="Invoices" columns="1">
+                <apex:PageblockTable value="{!invoiceList}" var="inv">
+                    <apex:column headerValue="Invoice Number" >
+                        <apex:commandLink value="{!inv.Name}" action="{!openNewViewPage}" >
+                            <apex:param name="pagee" value="{!inv.id}"/>
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column value="{!inv.Account__c}" headerValue="Account" headerClass="row"/>
+                    <apex:column value="{!inv.Invoice_Date__c}" headerValue="Invoice Date" headerClass="row"/>
+                    <apex:column value="{!inv.Due_Date__c}" headerValue="Due Date" headerClass="row"/>
+                    <apex:column value="{!inv.Amount_Paid__c}" headerValue="Amount Paid" headerClass="row" />
+                    <apex:column value="{!inv.Amount_Due__c}" headerValue="Amount Due" headerClass="row"/>
+                    <apex:column value="{!inv.Days_Overdue__c}" headerValue="Days Overdue" headerClass="row"/>
+                    <apex:column value="{!inv.Total__c}" headerValue="Total" headerClass="row"/>
+                    <apex:column value="{!inv.Status__c}" headerValue="Status" headerClass="row"/>
+                </apex:PageblockTable>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="New" action="{!showPopup}" rerender="tstpopup"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        
+        <apex:outputPanel id="tstpopup">
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+                Account Name: <apex:inputField value="{!InvoiceOnSave.Account__c}" label="Account" /><br/>
+                Invoice Date: <apex:inputField value="{!InvoiceOnSave.Invoice_Date__c}"/><br/>
+                Due Date: <apex:inputField value="{!InvoiceOnSave.Due_Date__c}"/><br/>
+                Amount Paid: <apex:inputField value="{!InvoiceOnSave.Amount_Paid__c}"/><br/>
+                Total: <apex:inputField value="{!InvoiceOnSave.Total__c}"/><br/>
+                <apex:commandButton action="{!saveInvoice}" value="Save" rerender="formid,tstpopup"/>
+                <apex:commandButton value="Close" action="{!closePopup}" rerender="tstpopup"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>
