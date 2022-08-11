@@ -1,4 +1,4 @@
-<apex:page standardController="Invoice__c" extensions="ListofInvoicesController" lightningStylesheets="true">
+<apex:page standardController="Invoice__c" extensions="ListofInvoicesController" lightningStylesheets="true" docType="html-5.0">
     
     <style type="text/css">
         .headerRow .row
@@ -33,10 +33,18 @@
         
     </style>
     <apex:form id="formid">
-        <apex:pageBlock>
-            <apex:pageBlockSection title="Invoices" columns="1">
+        <apex:pageBlock id="pb">
+            <apex:pageBlockSection title="Invoices" columns="1" id="pbs">
                 <apex:PageblockTable value="{!invoiceList}" var="inv">
-                    <apex:column headerValue="Invoice Number" >
+                    <apex:column headerValue="Actions" headerClass="row">
+                        <apex:commandLink action="{!editAction}" >Edit |&nbsp;
+                            <apex:param value="{!inv.Id}" name="idToEdit" />
+                        </apex:commandLink>
+                        <apex:commandLink action="{!deleteAction}" onclick="if(!confirm('Are you sure want to delete?')) return false;" rerender="formid">Del
+                            <apex:param value="{!inv.Id}" name="idToDel" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Invoice Number" headerClass="row" >
                         <apex:commandLink value="{!inv.Name}" action="{!openNewViewPage}" >
                             <apex:param name="pagee" value="{!inv.id}"/>
                         </apex:commandLink>
@@ -59,13 +67,20 @@
         <apex:outputPanel id="tstpopup">
             <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
             <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
-                Account Name: <apex:inputField value="{!InvoiceOnSave.Account__c}" label="Account" /><br/>
-                Invoice Date: <apex:inputField value="{!InvoiceOnSave.Invoice_Date__c}"/><br/>
-                Due Date: <apex:inputField value="{!InvoiceOnSave.Due_Date__c}"/><br/>
-                Amount Paid: <apex:inputField value="{!InvoiceOnSave.Amount_Paid__c}"/><br/>
-                Total: <apex:inputField value="{!InvoiceOnSave.Total__c}"/><br/>
-                <apex:commandButton action="{!saveInvoice}" value="Save" rerender="formid,tstpopup"/>
-                <apex:commandButton value="Close" action="{!closePopup}" rerender="tstpopup"/>
+                <apex:pageBlock >
+                    <apex:pageBlockSection title="New Invoice" collapsible="false">
+                        <apex:inputField value="{!InvoiceOnSave.Account__c}" label="Account" /><br/>
+                        <apex:inputField value="{!InvoiceOnSave.Invoice_Date__c}" showDatePicker="false" type="date"/><br/>
+                        <apex:inputField value="{!InvoiceOnSave.Due_Date__c}" showDatePicker="false" type="date"/><br/>
+                        <apex:inputField value="{!InvoiceOnSave.Amount_Paid__c}"/><br/>
+                        <apex:inputField value="{!InvoiceOnSave.Total__c}"/><br/>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+                <center>
+                    <apex:commandButton action="{!saveInvoice}" value="Save" rerender="formid,tstpopup" />
+                    <apex:commandButton value="Close" action="{!closePopup}" rerender="tstpopup"/>
+                </center>
+                
             </apex:outputPanel>
         </apex:outputPanel>
     </apex:form>
