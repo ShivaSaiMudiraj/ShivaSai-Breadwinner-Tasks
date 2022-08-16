@@ -21,6 +21,10 @@ Public class ListofInvoicesController {
         displayPopup = false;
     }
     
+    Public PageReference invoiceDetailClose() {
+        return page.ListOfInvoices_VF;
+    }
+    
     Public void saveInvoice(){
         displayPopup = false;
         Upsert InvoiceOnSave;
