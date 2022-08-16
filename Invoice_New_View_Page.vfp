@@ -1,15 +1,20 @@
 <apex:page standardController="Invoice__c" extensions="ListofInvoicesController" lightningStylesheets="true">
-    <apex:pageblock>
-        <apex:pageBlockSection title="Invoice Details">
-            <apex:outputField label="Invoice Number" value="{!invoice.Name}"/>
-            <apex:outputField label="Account" value="{!invoice.Account__r.Name}"/>
-            <apex:outputField label="Invoice Date" value="{!invoice.Invoice_Date__c}"/>
-            <apex:outputField label="Due Date" value="{!invoice.Due_Date__c}"/>
-            <apex:outputField label="Amount Paid" value="{!invoice.Amount_Paid__c}"/>
-            <apex:outputField label="Amount Due" value="{!invoice.Amount_Due__c}"/>
-            <apex:outputField label="Days Overdue" value="{!invoice.Days_Overdue__c}"/>
-            <apex:outputField label="Total" value="{!invoice.Total__c}"/>
-            <apex:outputField label="Status" value="{!invoice.Status__c}"/>
-        </apex:pageBlockSection>
-    </apex:pageblock>
+    <apex:form>
+        <apex:pageblock >
+            <apex:pageBlockSection title="Invoice Details">
+                <apex:outputField label="Invoice Number" value="{!invoice.Name}"/>
+                <apex:outputField label="Account" value="{!invoice.Account__r.Name}"/>
+                <apex:outputField label="Invoice Date" value="{!invoice.Invoice_Date__c}"/>
+                <apex:outputField label="Due Date" value="{!invoice.Due_Date__c}"/>
+                <apex:outputField label="Amount Paid" value="{!invoice.Amount_Paid__c}"/>
+                <apex:outputField label="Amount Due" value="{!invoice.Amount_Due__c}"/>
+                <apex:outputField label="Days Overdue" value="{!invoice.Days_Overdue__c}"/>
+                <apex:outputField label="Total" value="{!invoice.Total__c}"/>
+                <apex:outputField label="Status" value="{!invoice.Status__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Close" action="{!invoiceDetailClose}" />
+            </apex:pageBlockButtons>
+        </apex:pageblock>
+    </apex:form>
 </apex:page>
