@@ -3,7 +3,7 @@ Public class ListofInvoicesController {
     Public Invoice__c invoice{get;set;}
     Public Invoice__c invoiceOnSave{get;set;}
     Public Boolean displayPopup{get;set;}
-    
+    Public Boolean boolVar=true;
     
     Public  ListofInvoicesController(ApexPages.StandardController controller){
         
@@ -50,5 +50,21 @@ Public class ListofInvoicesController {
         string recordid=Apexpages.currentpage().getparameters().get('pagee');
         invoice=[Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Where id=:recordid Order By Name];
         Return page.Invoice_New_View_Page;
+    }
+    
+    Public Void sortAscDesc(){
+        
+        if(boolVar==true)
+        {
+            //String query = 'Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY Name DESC';
+            //invoiceList = database.query(query);
+            invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY Name DESC];
+            boolVar=false;
+        }
+        else
+        {
+            invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY Name ASC];
+            boolVar=true;
+        }
     }
 }
