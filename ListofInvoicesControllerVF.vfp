@@ -1,17 +1,17 @@
 <apex:page standardController="Invoice__c" extensions="ListofInvoicesController" lightningStylesheets="true" docType="html-5.0">
-    <apex:slds/>
+    <apex:slds />
     <style type="text/css">
         
         .custPopup{
         background-color: white;
-        border-width: 2px;
         border-style: solid;
-        z-index: 9999;
+        border-width: 2px;
         left: 50%;
         padding:10px;
-        position: absolute;
-        width: 500px;
-        margin-left: -250px;
+        position: fixed;
+        z-index: 9999;
+        width: 900px;
+        margin-left: -450px;
         top:100px;
         }
         .popupBackground{
@@ -25,28 +25,26 @@
         left: 0;
         z-index: 9998;
         }
-        
     </style>
     <script>
-    function loadPage()
-    {
-        location.reload();
+    function callJs(){
+    	sortColumn();
     }
     </script>
+    <html xmlns:xlink="http://www.w3.org/2000/svg">
     <apex:form id="formid">
         <apex:pageBlock title="Invoices" id="pb">
-            
-            <table aria-multiselectable="false" class="slds-table slds-table_bordered slds-table_fixed-layout  slds-table_resizable-cols" role="grid" aria-label="Invoices List">
+            <apex:actionFunction name="sortColumn" action="{!sortAscDesc}"/>
+            <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout  slds-table_resizable-cols" role="grid" aria-label="Invoices List">
                 <thead>
                     <tr class="slds-line-height_reset">
                         <th aria-label="Invoice Number" aria-sort="none" class="slds-is-sortable slds-cell_action-mode" scope="col">
-                            <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0">
-                                <span class="slds-assistive-text">Sort by: </span>
+                            <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0" onclick="callJs()">
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Invoice Number">Invoice Number</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
-                                        <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                        <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon" aria-hidden="true">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -60,12 +58,11 @@
                         </th>
                         <th aria-label="Account Name" aria-sort="none" class="slds-is-sortable slds-cell_action-mode" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Account Name">Account Name</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -79,12 +76,11 @@
                         </th>
                         <th aria-label="Invoice Date" aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Invoice Date">Invoice Date</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}" ></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -98,7 +94,6 @@
                         </th>
                         <th aria-label="Due Date" aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Due Date">Due Date</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
@@ -117,7 +112,6 @@
                         </th>
                         <th aria-label="Amount Paid" aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Amount Paid">Amount Paid</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
@@ -136,7 +130,6 @@
                         </th>
                         <th aria-label="Amount Due" aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="0">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Amount Due">Amount Due</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
@@ -174,7 +167,6 @@
                         </th>
                         <th aria-label="Total" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="-1">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Total">Total</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
@@ -193,7 +185,6 @@
                         </th>
                         <th aria-label="Status" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
                             <a class="slds-th__action slds-text-link_reset" href="#" role="button" tabindex="-1">
-                                <span class="slds-assistive-text">Sort by: </span>
                                 <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
                                     <span class="slds-truncate" title="Status">Status</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
@@ -280,7 +271,7 @@
                                     <apex:commandLink action="{!editAction}" >Edit |&nbsp;
                                         <apex:param value="{!inv.Id}" name="idToEdit" />
                                     </apex:commandLink>
-                                    <apex:commandLink action="{!deleteAction}" onclick="if(!confirm('Are you sure want to delete?')) return false;" reRender="formid">Del
+                                    <apex:commandLink action="{!deleteAction}" onclick="if(!confirm('Are you sure want to delete?')) return false;" >Del
                                         <apex:param value="{!inv.Id}" name="idToDel" />
                                     </apex:commandLink>
                                 </div>
@@ -291,7 +282,7 @@
             </table>
                
             <apex:pageBlockButtons location="bottom">
-                <apex:commandButton value="New" action="{!showPopup}" rerender="tstpopup"/>
+                <apex:commandButton value="New" action="{!showPopup}"/>
             </apex:pageBlockButtons>
                 
         </apex:pageBlock>
@@ -300,8 +291,8 @@
         <apex:outputPanel id="tstpopup">
             <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
             <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
-                <apex:pageBlock>
-                    <apex:pageBlockSection title="New Invoice" collapsible="false">
+                <apex:pageBlock >
+                    <apex:pageBlockSection title="New Invoice" collapsible="false" columns="2">
                         <apex:inputField value="{!InvoiceOnSave.Account__c}" label="Account" /><br/>
                         <apex:inputField value="{!InvoiceOnSave.Invoice_Date__c}" showDatePicker="false" type="date"/><br/>
                         <apex:inputField value="{!InvoiceOnSave.Due_Date__c}" showDatePicker="false" type="date"/><br/>
@@ -310,11 +301,11 @@
                     </apex:pageBlockSection>
                 </apex:pageBlock>
                 <center>
-                    <apex:commandButton action="{!saveInvoice}" value="Save" reRender="formid" />
+                    <apex:commandButton action="{!saveInvoice}" value="Save"  />
                     <apex:commandButton value="Close" action="{!closePopup}"/>
                 </center>
             </apex:outputPanel>
         </apex:outputPanel>
     </apex:form>
-    
+    </html>
 </apex:page>
