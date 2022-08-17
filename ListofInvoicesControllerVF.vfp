@@ -44,7 +44,7 @@
                                     <span class="slds-truncate" title="Invoice Number">Invoice Number</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon" aria-hidden="true">
-                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -62,7 +62,7 @@
                                     <span class="slds-truncate" title="Account Name">Account Name</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -80,7 +80,7 @@
                                     <span class="slds-truncate" title="Invoice Date">Invoice Date</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}" ></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -98,7 +98,7 @@
                                     <span class="slds-truncate" title="Due Date">Due Date</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -116,7 +116,7 @@
                                     <span class="slds-truncate" title="Amount Paid">Amount Paid</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -134,7 +134,7 @@
                                     <span class="slds-truncate" title="Amount Due">Amount Due</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -153,7 +153,7 @@
                                     <span class="slds-truncate" title="Days Overdue">Days Overdue</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -171,7 +171,7 @@
                                     <span class="slds-truncate" title="Total">Total</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -189,7 +189,7 @@
                                     <span class="slds-truncate" title="Status">Status</span>
                                     <span class="slds-icon_container slds-icon-utility-arrowdown">
                                         <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                                            <use xlink="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#arrowup')}"></use>
                                         </svg>
                                     </span>
                                 </div>
