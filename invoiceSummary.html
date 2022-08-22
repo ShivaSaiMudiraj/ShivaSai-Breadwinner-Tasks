@@ -1,0 +1,24 @@
+<template>
+    <lightning-card>
+        <lightning-accordion >
+            <lightning-accordion-section label="Summary Information">
+                <b>Paid:</b> {TotalPaidInvoices.data} <br>
+                <b>Current Due:</b> {CurrentDueInvoices.data}<br>
+                <b>Overdue:</b><br>
+                <!--<b>Overdue:</b> {OverdueInvoicesString}<br>-->
+                <b>Total Receivables:</b> {totalReceivables.data}
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </lightning-card>
+    <lightning-card>
+        <lightning-accordion>
+            <lightning-accordion-section label="Related Invoices">
+                <lightning-datatable 
+                key-field="id" 
+                data={invdata} 
+                columns={columns}>
+            </lightning-datatable>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </lightning-card>
+</template>
