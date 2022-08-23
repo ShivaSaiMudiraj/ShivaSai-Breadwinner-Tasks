@@ -1,24 +1,22 @@
 <template>
     <lightning-card>
-        <lightning-accordion >
-            <lightning-accordion-section label="Summary Information">
-                <b>Paid:</b> {TotalPaidInvoices.data} <br>
-                <b>Current Due:</b> {CurrentDueInvoices.data}<br>
-                <b>Overdue:</b><br>
-                <!--<b>Overdue:</b> {OverdueInvoicesString}<br>-->
-                <b>Total Receivables:</b> {totalReceivables.data}
-            </lightning-accordion-section>
-        </lightning-accordion>
-    </lightning-card>
-    <lightning-card>
-        <lightning-accordion>
-            <lightning-accordion-section label="Related Invoices">
+        <h4 class="slds-section-title--divider">Summary Information</h4><br>
+        <div class="slds-p-left_small"><b>Paid:</b> {TotalPaidInvoices.data}</div>
+        <div class="slds-p-left_small"><b>Current Due:</b> {CurrentDueInvoices.data}</div>
+        <div class="slds-p-left_small"><b>Overdue</b></div>
+        <ul class="slds-list_dotted slds-p-left_large slds-p-bottom_xx-small">
+            <li>1 - 30: {count1to30}</li>
+            <li>31 - 60: {count31to60}</li>
+            <li>61 - 90: {count61to90}</li>
+            <li>90+: {count91}</li>
+            <li>Total Overdue: {countStatus}</li>
+        </ul>
+        <div class="slds-p-left_small"><b>Total Receivables:</b> {totalReceivables.data}</div><br>
+                <h4 class="slds-section-title--divider">Invoices</h4><br>
                 <lightning-datatable 
                 key-field="id" 
                 data={invdata} 
                 columns={columns}>
             </lightning-datatable>
-            </lightning-accordion-section>
-        </lightning-accordion>
     </lightning-card>
 </template>
