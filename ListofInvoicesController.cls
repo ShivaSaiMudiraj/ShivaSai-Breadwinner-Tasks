@@ -10,7 +10,7 @@ Public class ListofInvoicesController {
     Public String sortField{get;set;}
     Public static Integer paidCount{get;set;}
     Public static Integer dueCount{get;set;}
-    Public static Integer overdueCount{get;set;}
+    Public static List<Invoice__c> overdueCount{get;set;}
     Public static List<AggregateResult> totalSum{get;set;}
     
     Public  ListofInvoicesController(ApexPages.StandardController controller){
@@ -49,7 +49,7 @@ Public class ListofInvoicesController {
     }
     Public void deleteAction() {
        string recordid=Apexpages.currentpage().getparameters().get('idToDel');
-        invoice=[Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Where id=:recordid Order By Name];
+        invoice=[Select id from Invoice__c Where id=:recordid];
         if(invoice !=null){
             delete invoice;
         }
@@ -83,8 +83,9 @@ Public class ListofInvoicesController {
         return dueCount;
     }
     @AuraEnabled(cacheable=true)
-    public static Integer overdueInvoices(String AccountId) {
-        overdueCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId];
+    public static List<Invoice__c> overdueInvoices(String AccountId) {
+        //overdueCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId];
+        overdueCount=[SELECT Id,Name,Days_Overdue__c,Status__c FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId];
         System.debug('overdueCount== '+overdueCount);
         return overdueCount;
     }
@@ -119,5 +120,8 @@ Public class ListofInvoicesController {
             arrowDown=false;
             arrowUp=true;
         }
+    }
+    Public class wrapperInvoice{
+        Public  Integer daysOverdue{get;set;}
     }
 }
