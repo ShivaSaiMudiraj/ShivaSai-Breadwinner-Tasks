@@ -16,23 +16,16 @@ export default class InvoiceSummary extends LightningElement {
     countStatus=0;
     @api recordId;
     
-    @track columns = [
+    columns = [
         {
         label: 'Invoice #',
         fieldName: 'invoiceName',
         type: 'url',
         typeAttributes: {label: { fieldName: 'Name' }, target: '_blank'}
     },
-    {
-        label: 'Status',
-        fieldName: 'Status__c',
-        type: 'text'
-        /*cellAttributes:{ 
-            class: { fieldName: 'Status__c' },
-            iconName: {
-                fieldName: 'IconName'
-            }
-        }*/
+    { label: 'Status',
+      fieldName: '',
+      cellAttributes: { iconName: { fieldName: 'Status__c' } , class: { fieldName: 'variant' }}
     },
     {
         label: 'Invoice Date',
@@ -76,6 +69,24 @@ wiredInvoices({ error, data }) {
             let tempInvRec = Object.assign({}, record);  
             tempInvRec.invoiceName = '/' + tempInvRec.Id;
             invArrayList.push(tempInvRec);
+        
+            if(tempInvRec.Status__c.includes("Paid")){
+                console.log('Paid Entered');
+                tempInvRec.Status__c='action:priority';
+                tempInvRec.variant='slds-icon slds-icon-text-success';
+                //tempInvRec.variant='slds-icon-text-success';
+            }
+            else if(tempInvRec.Status__c.includes("Overdue"))
+            {
+                console.log('Overdue Entered');
+                tempInvRec.Status__c='action:priority';
+                tempInvRec.variant='slds-icon slds-icon-text-error';
+            }
+            else {
+                console.log('Due Entered');
+                tempInvRec.Status__c='action:priority';
+                tempInvRec.variant='slds-icon slds-icon-text-warning';
+            }
         });
         this.invdata = invArrayList;
         console.log('invdata'+this.invdata);
@@ -88,6 +99,7 @@ wiredInvoices({ error, data }) {
 
 @wire(paidInvoices,  { AccountId:'$recordId' })TotalPaidInvoices;
 @wire(currentDueInvoices,  { AccountId:'$recordId' })CurrentDueInvoices;
+@wire(totalReceivablesInvoices,  { AccountId:'$recordId' })totalReceivables;
 @wire(overdueInvoices,  { AccountId:'$recordId' })
 wiredOverdueInvoices({ error, data }) {
 if (data) 
@@ -117,5 +129,5 @@ if (data)
 }
 }
 }
-@wire(totalReceivablesInvoices,  { AccountId:'$recordId' })totalReceivables;
+
 }
