@@ -121,7 +121,5 @@ Public class ListofInvoicesController {
             arrowUp=true;
         }
     }
-    Public class wrapperInvoice{
-        Public  Integer daysOverdue{get;set;}
-    }
+    
 }
