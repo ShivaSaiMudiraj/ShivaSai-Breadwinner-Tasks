@@ -32,7 +32,7 @@ Public class ListofInvoicesController {
     }
     
     Public PageReference invoiceDetailClose() {
-        return page.ListOfInvoices_VF;
+        return page.ListOfInvoicesvf;
     }
     
     Public void saveInvoice(){
