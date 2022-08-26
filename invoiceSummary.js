@@ -1,19 +1,17 @@
 import { LightningElement,api,track,wire } from 'lwc';
+import Chartjs from '@salesforce/resourceUrl/Chartjs';
+import { loadScript } from 'lightning/platformResourceLoader';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getAllInvoices from '@salesforce/apex/ListofInvoicesController.getAllInvoices';
 import paidInvoices from '@salesforce/apex/ListofInvoicesController.paidInvoices';
 import currentDueInvoices from '@salesforce/apex/ListofInvoicesController.currentDueInvoices';
 import overdueInvoices from '@salesforce/apex/ListofInvoicesController.overdueInvoices';
 import totalReceivablesInvoices from '@salesforce/apex/ListofInvoicesController.totalReceivablesInvoices';
+import getAllOverdues from '@salesforce/apex/ListofInvoicesController.getAllOverdues';
 export default class InvoiceSummary extends LightningElement {
     error;
     invoices;
     invdata=[];
-    overduedata=[];
-    count1to30=0;
-    count31to60=0;
-    count61to90=0;
-    count91=0;
-    countStatus=0;
     @api recordId;
     
     columns = [
@@ -100,34 +98,86 @@ wiredInvoices({ error, data }) {
 @wire(paidInvoices,  { AccountId:'$recordId' })TotalPaidInvoices;
 @wire(currentDueInvoices,  { AccountId:'$recordId' })CurrentDueInvoices;
 @wire(totalReceivablesInvoices,  { AccountId:'$recordId' })totalReceivables;
-@wire(overdueInvoices,  { AccountId:'$recordId' })
-wiredOverdueInvoices({ error, data }) {
-if (data) 
-{ 
-    this.overduedata = data;
-    this.countStatus= this.overduedata.length;
-    console.log('countStatus'+this.overduedata.length);
-    for(let i=0; i<this.overduedata.length; i++){
-        console.log('days overdue'+this.overduedata[i].Days_Overdue__c);
-       
-    if(this.overduedata[i].Days_Overdue__c >=1 && this.overduedata[i].Days_Overdue__c<=30){
-        console.log('count1to30==='+this.count1to30);
-         this.count1to30= this.count1to30 + 1;
-    }
-    else if(this.overduedata[i].Days_Overdue__c >=31 && this.overduedata[i].Days_Overdue__c<=60){
-        console.log('count31to60==='+this.count31to60);
-         this.count31to60= this.count31to60 + 1;
-    }
-    else if(this.overduedata[i].Days_Overdue__c >=61 && this.overduedata[i].Days_Overdue__c <=90){
-        console.log('count61to90==='+this.count61to90);
-         this.count61to90= this.count61to90 + 1;
-    } 
-    else if(this.overduedata[i].Days_Overdue__c >=91){
-        console.log('count91==='+this.count91);
-         this.count91= this.count91 + 1;
-    }     
+@wire(overdueInvoices,  { AccountId:'$recordId' })allOverduesCount;
+@wire (getAllOverdues, { AccountId:'$recordId' }) 
+overdues({error,data})
+{
+   if(data)
+   {
+    
+      for(var key in data)
+       {
+          this.updateChart(data[key].count,data[key].label);
+       }
+      this.error=undefined;
+   }
+  else if(error)
+  {
+     this.error = error;
+     this.overdues = undefined;
+  }
+}
+chart;
+chartjsInitialized = false;
+config={
+type : 'doughnut',
+data :{
+datasets :[
+{
+data: [
+],
+backgroundColor :[
+    'rgb(55,255,51)',
+    'rgb(238,253,21)',
+    'rgb(51,255,255)',
+    'rgb(0,0,255)',
+],
+   label:'Dataset 1'
+}
+],
+labels:[]
+},
+options: {
+    responsive : true,
+legend : {
+    position :'right'
+},
+animation:{
+   animateScale: true,
+   animateRotate : true
 }
 }
+};
+renderedCallback()
+{
+   if(this.chartjsInitialized)
+  {
+   return;
+  }
+  this.chartjsInitialized = true;
+  Promise.all([
+   loadScript(this,Chartjs)
+  ]).then(() =>{
+    const ctx = this.template.querySelector('canvas.donut')
+    .getContext('2d');
+    this.chart = new window.Chart(ctx, this.config);
+  })
+  .catch(error =>{
+    this.dispatchEvent(
+    new ShowToastEvent({
+    title : 'Error loading ChartJS',
+    message : error.message,
+    variant : 'error',
+   }),
+  );
+});
 }
-
+updateChart(count,label)
+{
+   this.chart.data.labels.push(label);
+   this.chart.data.datasets.forEach((dataset) => {
+   dataset.data.push(count);
+   });
+   this.chart.update();
+ }
 }
