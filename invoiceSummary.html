@@ -1,7 +1,7 @@
 <template>
     <lightning-card>
         <h4 class="slds-section-title--divider">Summary Information</h4><br>
-        <div class="slds-p-left_small"><b>Paid:</b> {TotalPaidInvoices.data}</div>
+        <!--<div class="slds-p-left_small"><b>Paid:</b> {TotalPaidInvoices.data}</div>
         <div class="slds-p-left_small"><b>Current Due:</b> {CurrentDueInvoices.data}</div>
         <div class="slds-p-left_small"><b>Overdue</b></div>
         <ul class="slds-list_dotted slds-p-left_large slds-p-bottom_xx-small">
@@ -11,7 +11,35 @@
             <li>90+: {count91}</li>
             <li>Total Overdue: {countStatus}</li>
         </ul>
-        <div class="slds-p-left_small"><b>Total Receivables:</b> {totalReceivables.data}</div><br>
+        <div class="slds-p-left_small"><b>Total Receivables:</b> {totalReceivables.data}</div><br>-->
+        <div class="slds-grid slds-gutters slds-p-left_x-large slds-p-right_x-large">
+            <div class="slds-col slds-align_absolute-center csize">
+              <span class="slds-text-body_large hSIze">Paid Invoices <div class="slds-p-left_x-large tsize">{TotalPaidInvoices.data}</div></span>
+            </div>&nbsp;&nbsp;&nbsp;
+            <div class="slds-col slds-align_absolute-center csize">
+              <span class="slds-text-body_large hSIze">Current Due <div class="slds-p-left_x-large tdsize">{CurrentDueInvoices.data} </div></span>
+            </div>&nbsp;&nbsp;&nbsp;
+            <div class="slds-col slds-align_absolute-center csize">
+              <span class="slds-text-body_large hSIze slds-p-left_medium">Total Receivables<div class="tasize">${totalReceivables.data}</div></span>
+            </div>&nbsp;&nbsp;&nbsp;
+            <div class="slds-col slds-align_absolute-center csize">
+                <span class="slds-text-body_large hSIze slds-p-left_medium">Total Overdue Invoices: {allOverduesCount.data} <canvas class="donut" lwc:dom="manual"></canvas> </span>
+            </div>&nbsp;&nbsp;&nbsp;
+        </div>
+        <!--<div class="demo-only demo-only--sizing slds-grid slds-wrap">
+          <div class="slds-size_1-of-4">
+            <span class="slds-text-body_large hSIze">Paid Invoices <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">{TotalPaidInvoices.data}</div></span>
+          </div>
+          <div class="slds-size_1-of-4">
+            <span class="slds-text-body_large hSIze">Current Due <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">{CurrentDueInvoices.data}</div></span>
+          </div>
+          <div class="slds-size_1-of-4">
+            <span class="slds-text-body_large hSIze">Total Receivables <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">${totalReceivables.data}</div></span>
+          </div>
+          <div class="slds-size_1-of-4">
+            <span class="slds-text-body_large hSIze">Total Overdue Invoices: {allOverduesCount.data}<canvas class="donut" lwc:dom="manual"></canvas></span>
+          </div>
+      </div>-->
                 <h4 class="slds-section-title--divider">Invoices</h4><br>
                 <lightning-datatable 
                 key-field="id" 
