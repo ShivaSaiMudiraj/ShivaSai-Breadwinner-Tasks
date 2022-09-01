@@ -43,7 +43,7 @@ public class TestListofInvoicesController {
         testInvoice5.Invoice_Date__c=system.today();
         testInvoice5.Total__c=100;
         Insert testInvoice5;
-                
+                        
         PageReference pageRef = Page.ListOfInvoicesvf;
         test.setCurrentPageReference(pageRef);
         pageRef.getParameters().put('pagee',testInvoice.id);
@@ -60,11 +60,8 @@ public class TestListofInvoicesController {
         controllerclass.editAction();
         controllerclass.deleteAction();
         controllerclass.sortAscDesc();
-        ListofInvoicesController.getAllInvoices(accounttest.id);
-        ListofInvoicesController.paidInvoices(accounttest.id);
-        ListofInvoicesController.currentDueInvoices(accounttest.id);
-        ListofInvoicesController.overdueInvoices(accounttest.id);
-        ListofInvoicesController.totalReceivablesInvoices(accounttest.id);
+        ListofInvoicesController.getAllInvoices(accounttest.id,'Name','asc');
         ListofInvoicesController.getAllOverdues(accounttest.id);
+        ListofInvoicesController.summaryInfo(accounttest.id);
     }
 }
