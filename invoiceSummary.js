@@ -3,22 +3,23 @@ import Chartjs from '@salesforce/resourceUrl/Chartjs';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getAllInvoices from '@salesforce/apex/ListofInvoicesController.getAllInvoices';
-import paidInvoices from '@salesforce/apex/ListofInvoicesController.paidInvoices';
-import currentDueInvoices from '@salesforce/apex/ListofInvoicesController.currentDueInvoices';
-import overdueInvoices from '@salesforce/apex/ListofInvoicesController.overdueInvoices';
-import totalReceivablesInvoices from '@salesforce/apex/ListofInvoicesController.totalReceivablesInvoices';
 import getAllOverdues from '@salesforce/apex/ListofInvoicesController.getAllOverdues';
+import summaryInfo from '@salesforce/apex/ListofInvoicesController.summaryInfo';
 export default class InvoiceSummary extends LightningElement {
     error;
     invoices;
     invdata=[];
+    summarydata=[];
     @api recordId;
+    sortBy='Name';
+    sortDirection='asc';
     
     columns = [
         {
         label: 'Invoice #',
         fieldName: 'invoiceName',
         type: 'url',
+        sortable: "true",
         typeAttributes: {label: { fieldName: 'Name' }, target: '_blank'}
     },
     { label: 'Status',
@@ -28,37 +29,43 @@ export default class InvoiceSummary extends LightningElement {
     {
         label: 'Invoice Date',
         fieldName: 'Invoice_Date__c',
-        type: 'Date'
+        type: 'Date',
+        sortable: "true"
     },
     {
         label: 'Due Date',
         fieldName: 'Due_Date__c',
-        type: 'Date'
+        type: 'Date',
+        sortable: "true"
     },
     {
         label: 'Amount Paid',
         fieldName: 'Amount_Paid__c',
-        type: 'currency'
+        type: 'currency',
+        sortable: "true"
     },
     {
         label: 'Amount Due',
         fieldName: 'Amount_Due__c',
-        type: 'currency'
+        type: 'currency',
+        sortable: "true"
     },
     {
         label: 'Days Overdue',
         fieldName: 'Days_Overdue__c',
-        type: 'number'
+        type: 'number',
+        sortable: "true"
     },
     {
         label: 'Total',
         fieldName: 'Total__c',
-        type: 'currency'
+        type: 'currency',
+        sortable: "true"
     }
     
 ];
 
-@wire(getAllInvoices,  { AccountId:'$recordId' })
+@wire(getAllInvoices,  { AccountId:'$recordId',field : '$sortBy',sortOrder : '$sortDirection' })
 wiredInvoices({ error, data }) {
     if (data) 
     {
@@ -72,7 +79,7 @@ wiredInvoices({ error, data }) {
                 console.log('Paid Entered');
                 tempInvRec.Status__c='action:priority';
                 tempInvRec.variant='slds-icon slds-icon-text-success';
-                //tempInvRec.variant='slds-icon-text-success';
+                
             }
             else if(tempInvRec.Status__c.includes("Overdue"))
             {
@@ -94,11 +101,29 @@ wiredInvoices({ error, data }) {
         this.error = result.error;
     }
 }
-
-@wire(paidInvoices,  { AccountId:'$recordId' })TotalPaidInvoices;
-@wire(currentDueInvoices,  { AccountId:'$recordId' })CurrentDueInvoices;
-@wire(totalReceivablesInvoices,  { AccountId:'$recordId' })totalReceivables;
-@wire(overdueInvoices,  { AccountId:'$recordId' })allOverduesCount;
+handleSorting(event) {
+    let sortByField = event.detail.fieldName;
+    console.log('sortByField ==='+sortByField);
+    if (sortByField === "invoiceName") {
+        this.sortBy = "Name";
+        console.log('sortBy if loop=='+this.sortBy);
+      }else{
+        this.sortBy=sortByField;
+        console.log('sortBy else loop'+this.sortBy);
+      }
+    //this.sortBy = sortByField;
+    this.sortDirection = event.detail.sortDirection;
+    console.log('sortDirection==='+this.sortDirection);
+}
+ 
+@wire (summaryInfo, { AccountId:'$recordId' }) 
+WiredsummaryInfo({error,data})
+{
+    if(data){
+        console.log('WiredsummaryInfo Entered');
+        this.summarydata = data;
+    }
+}
 @wire (getAllOverdues, { AccountId:'$recordId' }) 
 overdues({error,data})
 {
@@ -158,8 +183,7 @@ renderedCallback()
   Promise.all([
    loadScript(this,Chartjs)
   ]).then(() =>{
-    const ctx = this.template.querySelector('canvas.donut')
-    .getContext('2d');
+    const ctx = this.template.querySelector('canvas.Doughnut').getContext('2d');
     this.chart = new window.Chart(ctx, this.config);
   })
   .catch(error =>{
