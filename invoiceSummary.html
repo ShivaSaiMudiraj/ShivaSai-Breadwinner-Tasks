@@ -3,23 +3,28 @@
         <h4 class="slds-section-title--divider">Summary Information</h4><br>
         <div class="slds-grid slds-gutters slds-p-left_x-large slds-p-right_x-large">
             <div class="slds-col slds-align_absolute-center csize">
-              <span class="slds-text-body_large hSIze">Paid Invoices <div class="slds-p-left_x-large tsize">{TotalPaidInvoices.data}</div></span>
+              <span class="slds-text-body_large hSIze">Paid Invoices <div class="slds-p-left_x-large tsize">{summarydata.PaidInfo}</div></span>
             </div>&nbsp;&nbsp;&nbsp;
             <div class="slds-col slds-align_absolute-center csize">
-              <span class="slds-text-body_large hSIze">Current Due <div class="slds-p-left_x-large tdsize">{CurrentDueInvoices.data} </div></span>
+              <span class="slds-text-body_large hSIze">Current Due <div class="slds-p-left_x-large tdsize">{summarydata.CurrentDueInfo} </div></span>
             </div>&nbsp;&nbsp;&nbsp;
             <div class="slds-col slds-align_absolute-center csize">
-              <span class="slds-text-body_large hSIze slds-p-left_medium">Total Receivables<div class="tasize">${totalReceivables.data}</div></span>
+              <span class="slds-text-body_large hSIze slds-p-left_medium">Total Receivables<div class="tasize">${summarydata.TotalRecieveableInfo}</div></span>
             </div>&nbsp;&nbsp;&nbsp;
             <div class="slds-col slds-align_absolute-center csize">
-                <span class="slds-text-body_large hSIze slds-p-left_medium">Total Overdue Invoices: {allOverduesCount.data} <canvas class="donut" lwc:dom="manual"></canvas> </span>
+                <span class="slds-text-body_large hSIze slds-p-left_medium">Total Overdue Invoices: {summarydata.overdueInvoicesInfo} <canvas class="Doughnut" lwc:dom="manual"></canvas> </span>
             </div>&nbsp;&nbsp;&nbsp;
         </div>
                 <h4 class="slds-section-title--divider">Invoices</h4><br>
                 <lightning-datatable 
                 key-field="id" 
                 data={invdata} 
-                columns={columns}>
+                columns={columns}
+                sorted-by={sortBy}
+                sorted-direction={sortDirection}
+                onsort={handleSorting}
+                hide-checkbox-column="true">
             </lightning-datatable>
+          
     </lightning-card>
 </template>
