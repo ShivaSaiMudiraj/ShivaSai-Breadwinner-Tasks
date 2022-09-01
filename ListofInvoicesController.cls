@@ -2,7 +2,6 @@ Public class ListofInvoicesController {
     Public List<Invoice__c> invoiceList {get;set;}
     Public Invoice__c invoice{get;set;}
     Public Invoice__c invoiceOnSave{get;set;}
-    public static List<Invoice__c> accountInvoices;
     Public Boolean displayPopup{get;set;}
     Public Boolean arrowUp{get;set;}
     Public Boolean arrowDown{get;set;}
@@ -48,7 +47,7 @@ Public class ListofInvoicesController {
         displayPopup = true;
     }
     Public void deleteAction() {
-       string recordid=Apexpages.currentpage().getparameters().get('idToDel');
+        string recordid=Apexpages.currentpage().getparameters().get('idToDel');
         invoice=[Select id from Invoice__c Where id=:recordid];
         if(invoice !=null){
             delete invoice;
@@ -63,38 +62,15 @@ Public class ListofInvoicesController {
     }
     
     @AuraEnabled(cacheable=true)
-    public static List<Invoice__c> getAllInvoices(String AccountId) {
-        accountInvoices=[Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c where Account__c=:AccountId Order By Name];
-        System.debug('accountInvoices== '+accountInvoices);
-        return accountInvoices;
+    public static List<Invoice__c> getAllInvoices(String AccountId, String field, String sortOrder) {
+        String query;
+        query = 'Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c where Account__c=:AccountId';
+        if(field != null && sortOrder !=null){
+            query += ' ORDER BY '+field+' '+sortOrder;
+        }
+        return Database.query(query);
     }
-    @AuraEnabled(cacheable=true)
-    public static Integer paidInvoices(String AccountId) {
-         System.debug('paidInvoices entered');
-        paidCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Paid' and Account__c=:AccountId];
-        System.debug('PaidCount== '+paidCount);
-        return paidCount;
-    }
-    @AuraEnabled(cacheable=true)
-    public static Integer currentDueInvoices(String AccountId) {
-         System.debug('paidInvoices entered');
-        dueCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Due' and Account__c=:AccountId];
-        System.debug('dueCount== '+dueCount);
-        return dueCount;
-    }
-    @AuraEnabled(cacheable=true)
-    public static Integer overdueInvoices(String AccountId) {
-    overdueList=[SELECT count() FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId];
-        System.debug('overdueList== '+overdueList);
-        return overdueList;
-    }
-    @AuraEnabled(cacheable=true)
-    public static Integer totalReceivablesInvoices(String AccountId) {
-        totalSum=[SELECT SUM(Amount_Due__c) sum FROM Invoice__c WHERE Account__c=:AccountId];
-        System.debug('totalSum== '+totalSum);
-        Integer totalValue = Integer.valueOf(totalSum[0].get('sum'));
-        return totalValue;
-    }
+    
     Public Void sortAscDesc(){
         
         if(boolVar==true)
@@ -112,7 +88,7 @@ Public class ListofInvoicesController {
         else
         {	
             //String query = 'Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY '+sortField+' ASC';
-			//invoiceList = database.query(query);
+            //invoiceList = database.query(query);
             system.debug('invoiceList in sortascdsce==== '+invoiceList);
             invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY Name ASC];
             boolVar=true;
@@ -120,7 +96,7 @@ Public class ListofInvoicesController {
             arrowUp=true;
         }
     }
-   @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=true)
     public static List<DataSet> getAllOverdues(String AccountId){
         List<Invoice__c> overdueResult = [Select Days_Overdue__c from Invoice__c where status__c = 'Overdue' AND Account__c=:AccountId ];
         List<DataSet> dataSet = new List<DataSet>();
@@ -149,14 +125,12 @@ Public class ListofInvoicesController {
                 total90  = total90 + 1;
                 system.debug('total90' + total90);               
             } 
-            //totalOverdue=total1to30 + total31to60 + total61to90 + total90;
         }
         
         dataSet.add(new DataSet(status1to30 ,total1to30));
         dataSet.add(new DataSet(status31to60 ,total31to60));
         dataSet.add(new DataSet(status61to90 ,total61to90));
         dataSet.add(new DataSet(status90 ,total90));
-        //dataSet.add(new DataSet(totalOverdueStatus ,totalOverdue));
         System.debug('dataSet==='+dataSet);
         return dataSet ;
     }
@@ -173,4 +147,40 @@ Public class ListofInvoicesController {
         public Integer  count {get;set;}
     }
     
+    @AuraEnabled(cacheable=true)
+    public static wrapperClassInvoices summaryInfo(String AccountId) {
+        
+        paidCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Paid' and Account__c=:AccountId];
+        dueCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Due' and Account__c=:AccountId];
+        overdueList=[SELECT count() FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId];
+        totalSum=[SELECT SUM(Amount_Due__c) sum FROM Invoice__c WHERE Account__c=:AccountId];
+        System.debug('totalSum== '+totalSum);
+        Integer totalValue = Integer.valueOf(totalSum[0].get('sum'));
+        Integer sum=0;
+        if(totalValue>0){
+            system.debug('totalsum.size()=='+totalsum.size());
+            sum=totalValue;
+        }
+        else{
+            sum=0;
+        }
+        wrapperClassInvoices wrpobj = new wrapperClassInvoices();
+        wrpobj.PaidInfo = paidCount;
+        wrpobj.CurrentDueInfo = dueCount;
+        wrpobj.overdueInvoicesInfo = overdueList;
+        wrpobj.TotalRecieveableInfo = sum;
+        system.debug('wrpobj=='+wrpobj);
+        return wrpobj;
+    }
+    
+    public class wrapperClassInvoices{
+        @AuraEnabled
+        public Integer PaidInfo{get;set;}
+        @AuraEnabled
+        public Integer CurrentDueInfo{get;set;}
+        @AuraEnabled
+        public Integer TotalRecieveableInfo{get;set;}
+        @AuraEnabled
+        public Integer overdueInvoicesInfo{get;set;}
+    }
 }
