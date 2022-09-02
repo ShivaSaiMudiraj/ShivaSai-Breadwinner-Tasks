@@ -49,7 +49,7 @@ public class TestListofInvoicesController {
         pageRef.getParameters().put('pagee',testInvoice.id);
         pageRef.getParameters().put('idToEdit',testInvoice.id);
         pageRef.getParameters().put('idToDel',testInvoice.id);
-        
+        test.startTest();
         ApexPages.StandardController controller = new ApexPages.StandardController(testInvoice);
 		ListofInvoicesController controllerclass = new ListofInvoicesController(controller);
         ApexPages.Pagereference openView =controllerclass.openNewViewPage();
@@ -63,5 +63,6 @@ public class TestListofInvoicesController {
         ListofInvoicesController.getAllInvoices(accounttest.id,'Name','asc');
         ListofInvoicesController.getAllOverdues(accounttest.id);
         ListofInvoicesController.summaryInfo(accounttest.id);
+        test.stopTest();
     }
 }
