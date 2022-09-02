@@ -14,7 +14,7 @@ Public class ListofInvoicesController {
     
     Public  ListofInvoicesController(ApexPages.StandardController controller){
         system.debug('sortfield in constructor==='+sortField);
-        invoiceList = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Order By Name ];
+        invoiceList = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c WITH SECURITY_ENFORCED Order By Name ];
         system.debug('INVLst=='+invoiceList);
         arrowUp=true;
         arrowDown=false;
@@ -38,12 +38,12 @@ Public class ListofInvoicesController {
         displayPopup = false;
         Upsert InvoiceOnSave;
         //invoiceList.add(InvoiceOnSave);
-        invoiceList = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Order By Name  ];
+        invoiceList = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c WITH SECURITY_ENFORCED Order By Name  ];
     }
     Public void editAction() {
         string recordid=Apexpages.currentpage().getparameters().get('idToEdit');
         invoiceOnSave = new Invoice__c();
-        invoiceOnSave = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Where id=:recordid Order By Name ];
+        invoiceOnSave = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Where id=:recordid WITH SECURITY_ENFORCED Order By Name ];
         displayPopup = true;
     }
     Public void deleteAction() {
@@ -52,19 +52,19 @@ Public class ListofInvoicesController {
         if(invoice !=null){
             delete invoice;
         }
-        invoiceList = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Order By Name];
+        invoiceList = [Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c WITH SECURITY_ENFORCED Order By Name];
     }
     
     Public PageReference openNewViewPage() {
         string recordid=Apexpages.currentpage().getparameters().get('pagee');
-        invoice=[Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Where id=:recordid Order By Name];
+        invoice=[Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c Where id=:recordid WITH SECURITY_ENFORCED Order By Name];
         Return page.Invoice_New_View_Page;
     }
     
     @AuraEnabled(cacheable=true)
     public static List<Invoice__c> getAllInvoices(String AccountId, String field, String sortOrder) {
         String query;
-        query = 'Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c where Account__c=:AccountId';
+        query = 'Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  from Invoice__c where Account__c=:AccountId WITH SECURITY_ENFORCED';
         if(field != null && sortOrder !=null){
             query += ' ORDER BY '+field+' '+sortOrder;
         }
@@ -79,7 +79,7 @@ Public class ListofInvoicesController {
             //invoiceList = database.query(query);
             system.debug('sortfield==== '+sortField);
             system.debug('invoiceList in sortascdsce==== '+invoiceList);
-            invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY Name DESC];
+            invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c WITH SECURITY_ENFORCED ORDER BY Name DESC];
             boolVar=false;
             arrowDown=true;
             arrowUp=false;
@@ -90,7 +90,7 @@ Public class ListofInvoicesController {
             //String query = 'Select id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY '+sortField+' ASC';
             //invoiceList = database.query(query);
             system.debug('invoiceList in sortascdsce==== '+invoiceList);
-            invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c ORDER BY Name ASC];
+            invoiceList = [SELECT id,Name,Account__r.Name, Days_Overdue__c, Due_Date__c, Invoice_Date__c, Amount_Paid__c, Amount_Due__c, Status__c,Total__c  FROM Invoice__c WITH SECURITY_ENFORCED ORDER BY Name ASC];
             boolVar=true;
             arrowDown=false;
             arrowUp=true;
@@ -98,7 +98,7 @@ Public class ListofInvoicesController {
     }
     @AuraEnabled(cacheable=true)
     public static List<DataSet> getAllOverdues(String AccountId){
-        List<Invoice__c> overdueResult = [Select Days_Overdue__c from Invoice__c where status__c = 'Overdue' AND Account__c=:AccountId ];
+        List<Invoice__c> overdueResult = [Select Days_Overdue__c from Invoice__c where status__c = 'Overdue' AND Account__c=:AccountId WITH SECURITY_ENFORCED ];
         List<DataSet> dataSet = new List<DataSet>();
         
         String status1to30 = '1 - 30', status31to60 = '31 - 60', status61to90 = '61 - 90', status90 = '90+', totalOverdueStatus = 'Total Overdue' ;
@@ -150,10 +150,10 @@ Public class ListofInvoicesController {
     @AuraEnabled(cacheable=true)
     public static wrapperClassInvoices summaryInfo(String AccountId) {
         
-        paidCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Paid' and Account__c=:AccountId];
-        dueCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Due' and Account__c=:AccountId];
-        overdueList=[SELECT count() FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId];
-        totalSum=[SELECT SUM(Amount_Due__c) sum FROM Invoice__c WHERE Account__c=:AccountId];
+        paidCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Paid' and Account__c=:AccountId WITH SECURITY_ENFORCED];
+        dueCount=[SELECT COUNT() FROM Invoice__c WHERE Status__c='Due' and Account__c=:AccountId WITH SECURITY_ENFORCED];
+        overdueList=[SELECT count() FROM Invoice__c WHERE Status__c='Overdue' and Account__c=:AccountId WITH SECURITY_ENFORCED];
+        totalSum=[SELECT SUM(Amount_Due__c) sum FROM Invoice__c WHERE Account__c=:AccountId WITH SECURITY_ENFORCED];
         System.debug('totalSum== '+totalSum);
         Integer totalValue = Integer.valueOf(totalSum[0].get('sum'));
         Integer sum=0;
